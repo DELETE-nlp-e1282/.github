@@ -1,0 +1,163 @@
+{
+  "schema": "dsl.status/1",
+  "inputs": {
+    "dsl-course.yml": "458c91e39f023ccef736d22514fb95db29475bde",
+    "semesters.yml": "1b00db7bbc20a9ddb6bbfd617fd8b9b62e78e48c"
+  },
+  "course": {
+    "org": "DELETE-nlp-e1282",
+    "name": "Natural Language Processing",
+    "code": "E1282",
+    "stages": {
+      "C1": "done",
+      "C2": "done",
+      "C3": "done",
+      "C4": "done",
+      "C5": "todo",
+      "C6": "todo"
+    },
+    "stage_why": {
+      "C5": "No assignment template is ready yet.",
+      "C6": "The public website is off; it is optional."
+    },
+    "stage_optional": {
+      "C1": false,
+      "C2": false,
+      "C3": false,
+      "C4": true,
+      "C5": true,
+      "C6": true
+    },
+    "stage_set_aside": {
+      "C1": false,
+      "C2": false,
+      "C3": false,
+      "C4": false,
+      "C5": false,
+      "C6": false
+    },
+    "ready": true,
+    "materials": [
+      {
+        "repo": "course-materials-f2026",
+        "state": "ready",
+        "checks": [
+          {
+            "id": "kind_folder",
+            "label": "At least one folder of a content kind",
+            "done": true,
+            "why": null,
+            "blocks": true,
+            "detail": [
+              {
+                "kind": "lecture",
+                "folders": [
+                  "lectures"
+                ]
+              },
+              {
+                "kind": "lab",
+                "folders": [
+                  "labs"
+                ]
+              },
+              {
+                "kind": "readings",
+                "folders": [
+                  "readings"
+                ]
+              },
+              {
+                "kind": "exam",
+                "folders": []
+              },
+              {
+                "kind": "drop-in",
+                "folders": []
+              },
+              {
+                "kind": "other",
+                "folders": []
+              }
+            ]
+          },
+          {
+            "id": "syllabus",
+            "label": "Syllabus written",
+            "done": true,
+            "why": null,
+            "blocks": true
+          },
+          {
+            "id": "sessions",
+            "label": "Weekly plan in the syllabus",
+            "done": false,
+            "why": "The weekly plan is not in SYLLABUS.md yet.",
+            "blocks": false
+          },
+          {
+            "id": "withheld",
+            "label": "Withheld patterns reviewed",
+            "done": false,
+            "why": "Nothing is withheld from students yet; review the withheld patterns.",
+            "blocks": false
+          }
+        ]
+      }
+    ],
+    "templates": [
+      {
+        "repo": "assignment-1-f2026",
+        "slug": "assignment-1-f2026",
+        "state": "todo",
+        "starter": "derived"
+      }
+    ],
+    "semesters": [
+      "DELETE-nlp-f2026"
+    ],
+    "todo": [
+      {
+        "id": "materials:course-materials-f2026:sessions",
+        "kind": "materials",
+        "repo": "course-materials-f2026",
+        "text": "The weekly plan is not in SYLLABUS.md yet.",
+        "screen": "materials",
+        "entry": "course-materials-f2026",
+        "optional": true,
+        "set_aside": false
+      },
+      {
+        "id": "materials:course-materials-f2026:withheld",
+        "kind": "materials",
+        "repo": "course-materials-f2026",
+        "text": "Nothing is withheld from students yet; review the withheld patterns.",
+        "screen": "materials",
+        "entry": "course-materials-f2026",
+        "optional": true,
+        "set_aside": false
+      },
+      {
+        "id": "template:assignment-1-f2026:brief",
+        "kind": "template",
+        "repo": "assignment-1-f2026",
+        "text": "The brief (README.md) is not written yet.",
+        "screen": "template",
+        "entry": "assignment-1-f2026",
+        "optional": false,
+        "set_aside": false
+      },
+      {
+        "id": "template:assignment-1-f2026:starter",
+        "kind": "template",
+        "repo": "assignment-1-f2026",
+        "text": "Derive has not been run yet.",
+        "screen": "template",
+        "entry": "assignment-1-f2026",
+        "optional": false,
+        "set_aside": false
+      }
+    ]
+  },
+  "problems": []
+}
