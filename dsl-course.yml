@@ -25,10 +25,9 @@ course_code: E1282
 # what it does and can be edited there afterwards; changing them here changes the NEXT
 # assignment, never one that already exists. The two late-work lines are the toolkit's
 # own default, applied when they are absent here and from the assignment too.
-assignment_defaults:
-  max_team_size: 5            # group assignments only
-  late_window_days: 10        # 0 = nothing after the due date is accepted
-  late_penalty_per_day: 10%   # of the EARNED grade, per day started
+# One or two sentences, on ONE line - the blurb on every cohort site. Taken verbatim
+# from the Course Contents section of SYLLABUS.md in course-materials-f2026.
+course_description: "The course provides a conceptual and applied introduction to Natural Language processing (NLP). The program introduces NLP within the broader fields of Machine Learning and Deep Learning. It will cover core topics such as text representation, text preprocessing, supervised and unsupervised learning with labeled and unlabeled datasets, model evaluations, and emerging trends including using other data sources such as audio and video."
 
 # `course_name`, `course_code` and `course_description` are what reach the cohort
 # websites. Editing them here re-syncs every cohort site already bootstrapped from this
