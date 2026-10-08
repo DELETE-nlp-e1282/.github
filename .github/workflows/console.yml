@@ -1,33 +1,51 @@
 # SYSTEM-OWNED - do not edit, edits here are overwritten. This workflow is
 # re-rendered from the central DSL teaching toolkit by 'Refresh actions' (nightly).
-name: Send enrolment codes
+name: Console
 
-# Generates a random enrolment code per student (into semester-config/students.csv) and
-# emails each not-yet-onboarded student their code to their Hertie email address. Students
-# paste the code into the Join course issue - no personal data in the public repo.
-# Needs the GRAPH_* secrets.
+# Runs what the Instructor Console asks for. Not a button to press here: the Console fills
+# in `request` and follows the run.
 #
-# There is no button: a push to a semester's students.csv is what fires this (its
-# semester-config dispatch-send-codes.yml dispatches `send-codes`), so the roster is the
-# only thing anyone edits. Re-running is safe - a row is mailed only while its
-# `code_sent_at` is blank - which is also why pushing again does not re-send: to send a
-# row a second time, clear its `code_sent_at` and push that.
+# The run name carries the actor and nothing the caller typed. The op's outcome - the
+# public `dsl-outcome` annotation, the private outcome file, the refreshed status.json -
+# is written by `dsl_course.console` itself, so there is no step for it here.
+run-name: Console by ${{ github.actor }}
 
 on:
-  repository_dispatch:
-    types: [send-codes]
+  workflow_dispatch:
+    inputs:
+      request:
+        description: "Filled in by the Instructor Console; not for hand use"
+        required: true
+        type: string
 
+# One queue PER PERSON: two presses by one instructor run in order rather than at once,
+# and two instructors never wait on each other. Actions holds one pending run per group,
+# so a third press while two are outstanding replaces the pending one.
 concurrency:
-  group: ${{ github.repository }}-send-codes-${{ github.event.client_payload.semester_org }}
+  group: ${{ github.repository }}-console-${{ github.actor }}
   cancel-in-progress: false
 
 permissions: {}
 
 jobs:
-  send-codes:
+  console:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
+      - name: Verify the user may run actions for THIS repo
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.DSL_BOT_TOKEN }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Faculty & instructors have write+ on the course repos; students never do (and triggering a
+          # workflow_dispatch already requires write), so repo permission is the gate.
+          perm=$(gh api "repos/$REPO/collaborators/$ACTOR/permission" --jq '.permission' 2>/tmp/gherr || true)
+          case "$perm" in admin|write|maintain) exit 0 ;; esac
+          echo "::error::@$ACTOR lacks write on $REPO (permission='$perm'). gh api said:"
+          cat /tmp/gherr || true
+          exit 1
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
           repository: hertie-data-science-lab/dsl-teaching-toolkit
@@ -44,36 +62,22 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -r requirements.txt
-      - name: Send enrolment codes for the semester that pushed its roster
+      - name: Run the request
         env:
           GH_TOKEN: ${{ secrets.DSL_BOT_TOKEN }}
-          COURSE: ${{ github.repository_owner }}
-          DISPATCH_SEMESTER: ${{ github.event.client_payload.semester_org }}
-          OLD_PAYLOAD: ${{ github.event.client_payload.cohort_org }}
+          DSL_BOT_TOKEN: ${{ secrets.DSL_BOT_TOKEN }}
+          REQUEST: ${{ inputs.request }}
           GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
           GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
           GRAPH_CLIENT_CERT: ${{ secrets.GRAPH_CLIENT_CERT }}
           GRAPH_SENDER: ${{ secrets.GRAPH_SENDER }}
           DSL_MAINTAINER_EMAIL: ${{ secrets.DSL_MAINTAINER_EMAIL }}
         run: |
-          if [ -n "$OLD_PAYLOAD" ]; then
-            echo "::error::NOT_MIGRATED: this dispatch sends cohort_org, the old name of semester_org - run the migration"
-            exit 1
-          fi
-          # A payload with no semester names nothing to send for. Fail loudly rather than
-          # let an empty --semester-org reach the CLI and be refused for the wrong reason.
-          if [ -z "$DISPATCH_SEMESTER" ]; then
-            echo "::error::the send-codes dispatch carried no client_payload.semester_org - nothing to send."
-            exit 1
-          fi
-          # --dispatched-by names the course org whose registry authorises this semester:
-          # the payload comes from a semester's bot token, so the semester it names is
-          # untrusted input.
-          exec python3 -m dsl_course.enrol_codes --semester-org "$DISPATCH_SEMESTER" \
-            --dispatched-by "$COURSE" --no-preview > >(tee "$RUNNER_TEMP/run.log") 2>&1
-      - name: Report an unattended failure as an issue
+          gh auth setup-git
+          exec python -m dsl_course.console --request "$REQUEST" > >(tee "$RUNNER_TEMP/run.log") 2>&1
+      - name: Report a failed Console run as an issue
         id: notice
-        if: (failure() || cancelled()) && github.event_name != 'workflow_dispatch'
+        if: failure() && steps.gate.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.DSL_BOT_TOKEN }}
           WORKFLOW: ${{ github.workflow }}
@@ -81,7 +85,7 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           title="$WORKFLOW is failing"
-          note=$(printf 'The unattended run failed or was cancelled: %s\n\nNothing retries it before the next scheduled run. This issue closes itself once a run succeeds.\n' "$RUN_URL")
+          note=$(printf 'A Console run failed: %s\n\nThis issue closes itself once a Console run succeeds.\n' "$RUN_URL")
           # A filed issue emails only the repo's watchers, which in practice is nobody, so
           # the FIRST report mentions the org's admins; course-admin, not instructors,
           # because broken infrastructure is not the teaching staff's problem.
@@ -116,7 +120,7 @@ jobs:
           gh issue comment "${existing%% *}" --repo "$REPO" --body "$note"
           echo "report=true" >> "$GITHUB_OUTPUT"
       - name: Email the maintainer the failed step's log
-        if: (failure() || cancelled()) && github.event_name != 'workflow_dispatch' && steps.notice.outputs.report == 'true'
+        if: failure() && steps.gate.outcome == 'success' && steps.notice.outputs.report == 'true'
         env:
           WORKFLOW: ${{ github.workflow }}
           COURSE: ${{ github.repository_owner }}
