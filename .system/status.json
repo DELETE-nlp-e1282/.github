@@ -1,7 +1,7 @@
 {
   "schema": "dsl.status/1",
   "inputs": {
-    "dsl-course.yml": "458c91e39f023ccef736d22514fb95db29475bde",
+    "dsl-course.yml": "4d027b82f2f6306686fc6520719a3c3e431ff17e",
     "semesters.yml": "1b00db7bbc20a9ddb6bbfd617fd8b9b62e78e48c"
   },
   "horizon": {
@@ -16,11 +16,11 @@
       "C2": "done",
       "C3": "done",
       "C4": "done",
-      "C5": "problem",
+      "C5": "todo",
       "C6": "todo"
     },
     "stage_why": {
-      "C5": "2 problems need fixing.",
+      "C5": "No assignment template is ready yet.",
       "C6": "The public website is off; it is optional."
     },
     "stage_need": {
@@ -48,12 +48,12 @@
       "C6": false
     },
     "verdict": {
-      "state": "fixing",
-      "problems": 2,
+      "state": "ready",
+      "problems": 0,
       "missing": null,
       "suggestions": 4
     },
-    "ready": false,
+    "ready": true,
     "materials": [
       {
         "repo": "course-materials-f2026",
@@ -180,40 +180,5 @@
       }
     ]
   },
-  "problems": [
-    {
-      "id": "template:assignment-1-f2026:brief",
-      "scope": "course",
-      "stage": "C5",
-      "kind": "BRIEF",
-      "text": "The brief (README.md) is not written yet.",
-      "stops": "The hand-out on Sun 4 Oct would give students a placeholder brief.",
-      "fix": {
-        "repo": "DELETE-nlp-e1282/assignment-1-f2026",
-        "path": "",
-        "line": null,
-        "screen": "template",
-        "entry": "assignment-1-f2026"
-      },
-      "when": "2026-10-04T20:00:00+02:00",
-      "bites": "now"
-    },
-    {
-      "id": "template:assignment-1-f2026:starter",
-      "scope": "course",
-      "stage": "C5",
-      "kind": "STARTER",
-      "text": "Derive has not been run yet.",
-      "stops": "The hand-out on Sun 4 Oct would give students a starter out of step with the solution.",
-      "fix": {
-        "repo": "DELETE-nlp-e1282/assignment-1-f2026",
-        "path": "",
-        "line": null,
-        "screen": "template",
-        "entry": "assignment-1-f2026"
-      },
-      "when": "2026-10-04T20:00:00+02:00",
-      "bites": "now"
-    }
-  ]
+  "problems": []
 }
