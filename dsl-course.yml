@@ -1,7 +1,5 @@
 # INSTRUCTOR-OWNED - yours to edit freely; edits here are not overwritten.
 #
-org: DELETE-nlp-e1282
-org_name: Natural Language Processing
 course_name: Natural Language Processing
 course_code: E1282
 # central_ref: <40-character commit SHA>   # OPTIONAL: pin this course to one known
