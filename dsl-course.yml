@@ -37,7 +37,7 @@ course_description: "The course provides a conceptual and applied introduction t
 # registered separately in .github/cohort-courses-pages.yml.
 
 # Set by `--central-ref` at bootstrap - see the commented note above.
-central_ref: release
+central_ref: main
 
 # ---------------------------------------------------------------------------
 # People. Two DIFFERENT things live under the `people:` key below - don't
