@@ -19,8 +19,9 @@ on:
         description: "Materials repo to publish - the site is REBUILT from it; defaults to the latest course-materials-* repo"
         required: true
         type: choice
+        default: "course-materials-f2026"
         options:
-          - (none-yet)
+          - course-materials-f2026
       readings_mode:
         description: "Readings: reading-list (citations) / actual-readings (files) / none"
         required: true

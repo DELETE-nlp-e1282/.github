@@ -26,6 +26,7 @@ on:
         type: choice
         options:
           - (fresh starter)
+          - course-materials-f2026
       public_dirs:
         description: "Rendered publicly on the cohort site: which folders. Everything else stays private to enrolled students"
         type: choice
