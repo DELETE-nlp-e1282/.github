@@ -19,7 +19,7 @@ The substantive repos of this org are private (not accessible to enrolled studen
 List of cohort orgs registered to receive releases from this course org. _Auto-discovered from the
 `cohort-courses-pages.yml` registry_:
 
-_(none registered yet - run Bootstrap cohort)_
+- [DELETE-nlp-f2026](https://github.com/DELETE-nlp-f2026)
 
 ## Repositories
 
