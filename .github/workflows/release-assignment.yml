@@ -16,8 +16,9 @@ on:
         description: "2. Target cohort org"
         required: true
         type: choice
+        default: "DELETE-nlp-f2026"
         options:
-          - (none-yet)
+          - DELETE-nlp-f2026
       include_solution:
         description: "3. Also push the model solution from the template's solution branch into every student repo"
         type: boolean

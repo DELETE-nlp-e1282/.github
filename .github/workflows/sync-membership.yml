@@ -24,6 +24,7 @@ on:
         default: "(faculty only)"
         options:
           - (faculty only)
+          - DELETE-nlp-f2026
 
 concurrency:
   group: ${{ github.repository }}-sync-membership

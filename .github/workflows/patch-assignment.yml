@@ -19,8 +19,9 @@ on:
         description: "Cohort org holding the submission repos"
         required: true
         type: choice
+        default: "DELETE-nlp-f2026"
         options:
-          - (none-yet)
+          - DELETE-nlp-f2026
       course_source_repo:
         description: "Assignment template holding the corrected file (e.g. assignment-1-f2026)"
         required: true

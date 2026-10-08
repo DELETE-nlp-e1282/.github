@@ -18,8 +18,9 @@ on:
         description: "Cohort org"
         required: true
         type: choice
+        default: "DELETE-nlp-f2026"
         options:
-          - (none-yet)
+          - DELETE-nlp-f2026
       dry_run:
         description: "Preview who gets what, as an issue in classroom-config - push no grades, send nothing"
         type: boolean
