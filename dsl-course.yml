@@ -35,7 +35,7 @@ course_description: "The course provides a conceptual and applied introduction t
 # registered separately in .github/semesters.yml.
 
 # Set by `--central-ref` at bootstrap - see the commented note above.
-central_ref: main
+central_ref: 0f33f2ae041a4b0fc806bb1b2f6f2e8b260a440b
 
 # ---------------------------------------------------------------------------
 # People. Two DIFFERENT things live under the `people:` key below - don't
